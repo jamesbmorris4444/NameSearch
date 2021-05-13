@@ -20,22 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"/>
-        <activity
             android:name=".search_screen.SearchNewActivity"/>
         <activity
             android:name=".cart_screen.CartNewActivity"/>
         <activity
             android:name=".payment_screen.PaymentNewActivity"/>
-        <activity
-            android:name=".PaymentMethodActivity"
-            android:parentActivityName=".CartActivity"/>
-        <activity
-            android:name=".CartActivity"
-            android:parentActivityName=".DomainSearchActivity"/>
-        <activity
-            android:name=".DomainSearchActivity"
-            android:parentActivityName=".LoginActivity"/>
     </application>
 
 </manifest>
