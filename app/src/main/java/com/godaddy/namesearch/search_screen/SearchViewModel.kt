@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.godaddy.namesearch.R
 import com.godaddy.namesearch.cart_screen.CartNewActivity
-import com.godaddy.namesearch.logger.LogUtils
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.Repository
-import com.godaddy.namesearch.repository.network.APIClient
 import com.godaddy.namesearch.repository.storage.Domain
 import com.godaddy.namesearch.repository.storage.DomainSearchExactMatchResponse
 import com.godaddy.namesearch.repository.storage.DomainSearchRecommendedResponse
@@ -82,14 +80,6 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     }
 
     private fun showExactList(domainsExactListResponse: DomainSearchExactMatchResponse) {
-        LogUtils.D(
-            APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                LogUtils.TagFilter.API
-            ), String.format("exact response1************=%s", domainsExactListResponse.products[0].priceInfo.currentPriceDisplay))
-        LogUtils.D(
-            APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                LogUtils.TagFilter.API
-            ), String.format("exact response2************=%s", domainsExactListResponse.domain.fqdn))
         adapterList.add(Domain(name = domainsExactListResponse.domain.fqdn, price = domainsExactListResponse.products[0].priceInfo.currentPriceDisplay, productId = 0, selected = false))
         getRecommended()
     }
@@ -104,10 +94,6 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
 
     private fun showSpinsList(domainsSpinsListResponse: DomainSearchRecommendedResponse) {
         for (index in domainsSpinsListResponse.domains.indices) {
-            LogUtils.D(
-                APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                    LogUtils.TagFilter.API
-                ), String.format("rec response1************=%s", domainsSpinsListResponse.domains[index].fqdn))
             if (index >= domainsSpinsListResponse.products.size) {
                 adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = "0.00", productId = 0, selected = false))
             } else {

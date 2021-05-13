@@ -1,13 +1,10 @@
 package com.godaddy.namesearch.repository.storage
 
-import com.godaddy.namesearch.Auth
-import com.godaddy.namesearch.PaymentMethod
-import com.godaddy.namesearch.User
 import com.google.gson.annotations.SerializedName
 
 data class Auth(val token: String)
 
-object AuthManager {
+object AuthManagerNew {
     var user: User? = null
     var token = String()
 }
@@ -68,8 +65,8 @@ data class LoginRequest(
     val pwd: String,
 )
 
-object PaymentsManager {
-    var selectedPaymentMethod: PaymentMethod? = null
+object PaymentsManagerNew {
+    var selectedPaymentMethod: PaymentMethod = PaymentMethod(token = "token", name = "name", lastFour = "last", displayFormattedEmail = "email")
 }
 
 data class PaymentMethod(
@@ -77,6 +74,11 @@ data class PaymentMethod(
     val token: String,
     val lastFour: String?,
     val displayFormattedEmail: String?
+)
+
+data class PaymentRequest(
+    val auth: String,
+    val token: String,
 )
 
 object ShoppingCartNew {

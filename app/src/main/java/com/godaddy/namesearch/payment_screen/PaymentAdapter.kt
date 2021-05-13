@@ -43,6 +43,11 @@ class PaymentAdapter(private val paymentCallbacks: PaymentCallbacks) : RecyclerV
     inner class DomainViewHolder internal constructor(itemView: View, viewModel: PaymentItemViewModel, viewDataBinding: ItemPaymentNewBinding) :
         ItemViewHolder<PaymentMethod, PaymentItemViewModel> (itemView, viewModel, viewDataBinding)
 
+    override fun onBindViewHolder(holder: ItemViewHolder<PaymentMethod, PaymentItemViewModel>, position: Int) {
+        super.onBindViewHolder(holder, position)
+        holder.itemView.tag = position
+    }
+
     override fun itemFilterable(item: PaymentMethod, constraint: String): Boolean {
         return true
     }

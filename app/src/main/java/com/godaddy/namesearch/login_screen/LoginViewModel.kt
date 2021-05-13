@@ -8,10 +8,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.godaddy.namesearch.R
-import com.godaddy.namesearch.logger.LogUtils
 import com.godaddy.namesearch.repository.Repository
-import com.godaddy.namesearch.repository.network.APIClient
-import com.godaddy.namesearch.repository.storage.AuthManager
+import com.godaddy.namesearch.repository.storage.AuthManagerNew
 import com.godaddy.namesearch.repository.storage.LoginRequest
 import com.godaddy.namesearch.repository.storage.LoginResponse
 import com.godaddy.namesearch.search_screen.SearchNewActivity
@@ -63,12 +61,8 @@ class LoginViewModel(private val loginCallbacks: LoginCallbacks) : AndroidViewMo
     }
 
     private fun processLogin(loginResponse: LoginResponse) {
-        LogUtils.D(
-            APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                LogUtils.TagFilter.API
-            ), String.format("okHttp response=%s", loginResponse))
-        AuthManager.user = loginResponse.user
-        AuthManager.token = loginResponse.auth.token
+        AuthManagerNew.user = loginResponse.user
+        AuthManagerNew.token = loginResponse.auth.token
         loginCallbacks.fetchLoginActivity().startActivity(Intent(loginCallbacks.fetchLoginActivity(), SearchNewActivity::class.java))
     }
 

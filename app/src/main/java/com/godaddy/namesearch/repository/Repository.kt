@@ -2,9 +2,9 @@ package com.godaddy.namesearch.repository
 
 import android.view.View
 import android.widget.ProgressBar
-import com.godaddy.namesearch.logger.LogUtils
 import com.godaddy.namesearch.repository.network.*
 import com.godaddy.namesearch.repository.storage.*
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -12,14 +12,15 @@ import java.util.concurrent.TimeUnit
 
 class Repository {
 
-    private val apiInterfacePost: APIInterfacePOST = APIClient.postClient
+    private val apiInterfaceLoginPost: APIInterfaceLoginPOST = APIClient.loginPostClient
     private val apiInterfaceExactGET: APIInterfaceExactGET = APIClient.getExactList
     private val apiInterfaceSpinsGET: APIInterfaceSpinsGET = APIClient.getSpinsList
     private val apiInterfacePaymentsGET: APIInterfacePaymentsGET = APIClient.getPaymentsList
+    private val apiInterfaceProcessPost: APIInterfaceProcessPOST = APIClient.PaymentProcessingPostClient
     private lateinit var disposable: Disposable
 
     fun postLogin(request: LoginRequest, progressBar: ProgressBar, processLogin: (loginResponse: LoginResponse) -> Unit) {
-        disposable = apiInterfacePost.login(request)
+        disposable = apiInterfaceLoginPost.login(request)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
@@ -39,10 +40,6 @@ class Repository {
                 disposable.dispose()
                 progressBar.visibility = View.GONE
                 showExactList(exactResponse)
-                LogUtils.D(
-                    APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                        LogUtils.TagFilter.API
-                    ), String.format("5555555************=%s", exactResponse))
             }
     }
 
@@ -55,10 +52,6 @@ class Repository {
                 disposable.dispose()
                 progressBar.visibility = View.GONE
                 showSpinsList(spinsResponse)
-                LogUtils.D(
-                    APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                        LogUtils.TagFilter.API
-                    ), String.format("5555555************=%s", spinsResponse))
             }
     }
 
@@ -71,10 +64,16 @@ class Repository {
                 disposable.dispose()
                 progressBar.visibility = View.GONE
                 showPaymentsList(paymentsResponse)
-                LogUtils.D(
-                    APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
-                        LogUtils.TagFilter.API
-                    ), String.format("9999999************=%s", paymentsResponse))
+            }
+    }
+
+    fun postPaymentProcessing(request: PaymentRequest, processPayment: () -> Unit) {
+        disposable = Completable.fromAction { apiInterfaceProcessPost.processPayment(request) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .timeout(15L, TimeUnit.SECONDS)
+            .subscribe{
+                processPayment()
             }
     }
 

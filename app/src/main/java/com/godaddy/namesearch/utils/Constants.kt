@@ -8,5 +8,6 @@ object Constants {
     const val EXACT_PARAM = "search/exact"
     const val SPINS_PARAM = "search/spins"
     const val PAYMENTS_PARAM = "user/payment-methods"
+    const val PROCESS_PARAM = "payments/process"
     const val QUERY_PARAM = "q"
 }
