@@ -32,8 +32,9 @@
 
     <ImageButton
         android:id="@+id/remove_button"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:onClick="@{(view) -> cartItemViewModel.onRemoveClicked(view)}"
         android:src="@android:drawable/ic_menu_delete"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>

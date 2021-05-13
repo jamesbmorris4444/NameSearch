@@ -1,5 +1,6 @@
 package com.godaddy.namesearch.cart_screen
 
+import android.view.View
 import androidx.databinding.ObservableField
 import com.godaddy.namesearch.recyclerview.RecyclerViewItemViewModel
 import com.godaddy.namesearch.repository.storage.Domain
@@ -13,6 +14,10 @@ class CartItemViewModel(private val cartCallbacks: CartCallbacks) : RecyclerView
     override fun setItem(item: Domain) {
         name.set(item.name)
         price.set(item.price)
+    }
+
+    fun onRemoveClicked(view: View) {
+        cartCallbacks.fetchCartActivity().cartViewModel.onRemoveClicked(view)
     }
 
 }

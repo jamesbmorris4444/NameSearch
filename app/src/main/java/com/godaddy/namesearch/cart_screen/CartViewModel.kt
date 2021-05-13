@@ -2,6 +2,7 @@ package com.godaddy.namesearch.cart_screen
 
 import android.app.Application
 import android.content.Intent
+import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -76,6 +77,13 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
         }
         val currencyFormatter = NumberFormat.getCurrencyInstance()
         return "Pay ${currencyFormatter.format(totalPayment)} Now"
+    }
+
+    fun onRemoveClicked(view: View) {
+        adapter.remove(view.tag as Int)
+        adapter.notifyDataSetChanged()
+        ShoppingCartNew.domains.removeAt(view.tag as Int)
+        totalPrice.set(updatePayButton())
     }
 
 }

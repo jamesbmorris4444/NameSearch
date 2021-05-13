@@ -82,7 +82,7 @@ data class PaymentRequest(
 )
 
 object ShoppingCartNew {
-    var domains: List<Domain> = listOf()
+    var domains: MutableList<Domain> = mutableListOf()
 }
 
 data class User(

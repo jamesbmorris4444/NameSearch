@@ -14,7 +14,7 @@ import timber.log.Timber
 class CartNewActivity : AppCompatActivity(), CartCallbacks {
 
     lateinit var repository: Repository
-    private lateinit var cartViewModel: CartViewModel
+    lateinit var cartViewModel: CartViewModel
     private lateinit var activityMainBinding: ActivityCartNewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
