@@ -24,8 +24,8 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
-        android:id="@+id/pay_now_button"
-        android:text="@{cartViewModel.totalPrice}"
+        android:id="@+id/select_button"
+        android:text="SELECT A PAYMENT_METHOD"
         android:onClick="@{() -> cartViewModel.onPayNowClicked()}"
         android:layout_width="match_parent"
         android:layout_height="60dp"

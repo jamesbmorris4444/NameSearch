@@ -16,6 +16,7 @@ class PaymentNewActivity : AppCompatActivity(), PaymentCallbacks {
     lateinit var repository: Repository
     lateinit var paymentViewModel: PaymentViewModel
     private lateinit var activityMainBinding: ActivityPaymentMethodNewBinding
+    var selectedPaymentMethodView: View? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
         repository = Repository()

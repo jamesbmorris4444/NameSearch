@@ -3,7 +3,6 @@ package com.godaddy.namesearch.cart_screen
 import android.app.Application
 import android.content.Intent
 import android.view.View
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.godaddy.namesearch.repository.storage.ShoppingCartNew
 import com.godaddy.namesearch.utils.CartCallbacks
 import com.godaddy.namesearch.utils.DaggerRepositoryCartDependencyInjector
 import com.godaddy.namesearch.utils.RepositoryCartInjectorModule
-import java.text.NumberFormat
 import javax.inject.Inject
 
 
@@ -34,7 +32,6 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
 
     override var adapter: CartAdapter = CartAdapter(cartCallbacks)
     override val itemDecorator: RecyclerView.ItemDecoration? = null
-    val totalPrice: ObservableField<String> = ObservableField("")
 
     /**
      * Initialize the ViewModel using the primary constructor
@@ -62,28 +59,16 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
 
     fun initialize() {
         adapter.addAll(ShoppingCartNew.domains)
-        totalPrice.set(updatePayButton())
     }
 
     fun onPayNowClicked() {
         cartCallbacks.fetchCartActivity().startActivity(Intent(cartCallbacks.fetchCartActivity(), PaymentNewActivity::class.java))
     }
 
-    private fun updatePayButton(): String {
-        var totalPayment = 0.00
-        ShoppingCartNew.domains.forEach {
-            val priceDouble = it.price.replace("$","").replace(",","").toDouble()
-            totalPayment += priceDouble
-        }
-        val currencyFormatter = NumberFormat.getCurrencyInstance()
-        return "Pay ${currencyFormatter.format(totalPayment)} Now"
-    }
-
     fun onRemoveClicked(view: View) {
         adapter.remove(view.tag as Int)
         adapter.notifyDataSetChanged()
         ShoppingCartNew.domains.removeAt(view.tag as Int)
-        totalPrice.set(updatePayButton())
     }
 
 }
