@@ -4,10 +4,12 @@ import android.app.Application
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.godaddy.namesearch.R
@@ -42,7 +44,8 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     fun searchTextInputEditTextChanged(string: CharSequence, start: Int, before: Int, count: Int) { }
     val listIsVisible: ObservableField<Int> = ObservableField(View.GONE)
     override var adapter: SearchAdapter = SearchAdapter(searchCallbacks)
-    override val itemDecorator: RecyclerView.ItemDecoration? = null
+    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(searchCallbacks.fetchSearchActivity(), LinearLayout.VERTICAL)
+
     private var adapterList: MutableList<Domain> = mutableListOf()
 
     init {

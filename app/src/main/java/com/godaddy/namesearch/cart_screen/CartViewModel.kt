@@ -3,8 +3,10 @@ package com.godaddy.namesearch.cart_screen
 import android.app.Application
 import android.content.Intent
 import android.view.View
+import android.widget.LinearLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.godaddy.namesearch.payment_screen.PaymentNewActivity
@@ -31,7 +33,7 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
     lateinit var repository: Repository
 
     override var adapter: CartAdapter = CartAdapter(cartCallbacks)
-    override val itemDecorator: RecyclerView.ItemDecoration? = null
+    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(cartCallbacks.fetchCartActivity(), LinearLayout.VERTICAL)
 
     /**
      * Initialize the ViewModel using the primary constructor

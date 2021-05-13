@@ -3,11 +3,13 @@ package com.godaddy.namesearch.payment_screen
 import android.app.Application
 import android.graphics.Color
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.godaddy.namesearch.R
@@ -35,7 +37,7 @@ class PaymentViewModel(private val paymentCallbacks: PaymentCallbacks) : Recycle
     lateinit var repository: Repository
 
     override var adapter: PaymentAdapter = PaymentAdapter(paymentCallbacks)
-    override val itemDecorator: RecyclerView.ItemDecoration? = null
+    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(paymentCallbacks.fetchPaymentActivity(), LinearLayout.VERTICAL)
     private lateinit var paymentMethodList: List<PaymentMethod>
     val totalPrice: ObservableField<String> = ObservableField("")
 
