@@ -13,8 +13,8 @@ class PaymentItemViewModel(private val paymentCallbacks: PaymentCallbacks) : Rec
 
     override fun setItem(item: PaymentMethod) {
         name.set(item.name)
-        if(item.lastFour == null) {
-            lastFour.set("9999")
+        if (item.lastFour == null) {
+            lastFour.set(item.displayFormattedEmail)
         } else {
             lastFour.set(item.lastFour)
         }
