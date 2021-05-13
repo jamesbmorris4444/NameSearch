@@ -20,14 +20,12 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [RepositoryLoginInjectorModule::class])
 interface RepositoryLoginDependencyInjector {
-    fun inject(activity: LoginNewActivity)
     fun inject(viewModel: LoginViewModel)
 }
 
 @Singleton
 @Component(modules = [RepositorySearchInjectorModule::class])
 interface RepositorySearchDependencyInjector {
-    fun inject(activity: SearchNewActivity)
     fun inject(viewModel: SearchViewModel)
     fun inject(adapter: SearchAdapter)
 }
