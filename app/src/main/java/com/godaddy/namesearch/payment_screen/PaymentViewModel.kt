@@ -3,8 +3,8 @@ package com.godaddy.namesearch.payment_screen
 import android.app.Application
 import android.graphics.Color
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -12,13 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.R
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.Repository
 import com.godaddy.namesearch.repository.storage.*
 import com.godaddy.namesearch.utils.DaggerRepositoryPaymentDependencyInjector
 import com.godaddy.namesearch.utils.PaymentCallbacks
 import com.godaddy.namesearch.utils.RepositoryPaymentInjectorModule
+import kotlinx.android.synthetic.main.activity_payment_method_new.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -42,12 +42,10 @@ class PaymentViewModel(private val paymentCallbacks: PaymentCallbacks) : Recycle
     val totalPrice: ObservableField<String> = ObservableField("")
 
     init {
-        paymentCallbacks.fetchPaymentActivity()?.let { activity ->
-            DaggerRepositoryPaymentDependencyInjector.builder()
-                .repositoryPaymentInjectorModule(RepositoryPaymentInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
+        DaggerRepositoryPaymentDependencyInjector.builder()
+            .repositoryPaymentInjectorModule(RepositoryPaymentInjectorModule(paymentCallbacks.fetchPaymentActivity()))
+            .build()
+            .inject(this)
     }
 
     override fun setLayoutManager(): RecyclerView.LayoutManager {
@@ -55,7 +53,6 @@ class PaymentViewModel(private val paymentCallbacks: PaymentCallbacks) : Recycle
             override fun canScrollHorizontally(): Boolean {
                 return false
             }
-
             override fun canScrollVertically(): Boolean {
                 return true
             }
@@ -64,23 +61,25 @@ class PaymentViewModel(private val paymentCallbacks: PaymentCallbacks) : Recycle
 
     fun initialize() {
         totalPrice.set(updatePayButton())
-        val progressBar: ProgressBar = paymentCallbacks.fetchPaymentActivity().findViewById(R.id.payment_progress_bar)
-        progressBar.visibility = View.VISIBLE
-        repository.getPaymentMethods(progressBar, this::showPaymentsList)
+        paymentCallbacks.fetchPaymentRootView().payment_progress_bar.visibility = View.VISIBLE
+        repository.getPaymentMethods(this::showPaymentsList)
+        paymentCallbacks.fetchPaymentRootView().pay_now_button.isEnabled = false
     }
 
     private fun showPaymentsList(paymentMethodList: List<PaymentMethod>) {
+        paymentCallbacks.fetchPaymentRootView().payment_progress_bar.visibility = View.GONE
         this.paymentMethodList = paymentMethodList
         adapter.addAll(paymentMethodList)
     }
 
     fun onItemClicked(view: View) {
+        paymentCallbacks.fetchPaymentRootView().pay_now_button.isEnabled = true
         PaymentsManagerNew.selectedPaymentMethod = paymentMethodList[view.tag as Int]
-        paymentCallbacks.fetchPaymentActivity().selectedPaymentMethodView?.let {
-            it.setBackgroundColor(Color.TRANSPARENT)
-        }
+        paymentCallbacks.fetchPaymentActivity().selectedPaymentMethodView?.setBackgroundColor(Color.TRANSPARENT)
         paymentCallbacks.fetchPaymentActivity().selectedPaymentMethodView = view
         view.setBackgroundColor(Color.LTGRAY)
+        val buttonView: Button = paymentCallbacks.fetchPaymentRootView().pay_now_button
+        buttonView.setBackgroundColor(Color.BLACK)
     }
 
     fun onSelectPaymentClicked() {

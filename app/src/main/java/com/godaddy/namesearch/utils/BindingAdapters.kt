@@ -104,6 +104,6 @@ fun setHint(view: TextView, hint: String) {
 }
 
 @BindingAdapter("recyclerViewViewModel")
-fun setRecyclerViewViewModel(recyclerView: RecyclerView, viewModel: RecyclerViewViewModel?) {
-    viewModel?.setupRecyclerView(recyclerView)
+fun setRecyclerViewViewModel(recyclerView: RecyclerView, viewModel: RecyclerViewViewModel) {
+    viewModel.setupRecyclerView(recyclerView)
 }

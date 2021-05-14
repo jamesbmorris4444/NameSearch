@@ -2,8 +2,10 @@ package com.godaddy.namesearch.cart_screen
 
 import android.app.Application
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +18,7 @@ import com.godaddy.namesearch.repository.storage.ShoppingCartNew
 import com.godaddy.namesearch.utils.CartCallbacks
 import com.godaddy.namesearch.utils.DaggerRepositoryCartDependencyInjector
 import com.godaddy.namesearch.utils.RepositoryCartInjectorModule
+import kotlinx.android.synthetic.main.activity_cart_new.view.*
 import javax.inject.Inject
 
 
@@ -34,10 +37,8 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
 
     override var adapter: CartAdapter = CartAdapter(cartCallbacks)
     override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(cartCallbacks.fetchCartActivity(), LinearLayout.VERTICAL)
+    val clickable: ObservableField<Boolean> = ObservableField(false)
 
-    /**
-     * Initialize the ViewModel using the primary constructor
-     */
     init {
         cartCallbacks.fetchCartActivity()?.let { activity ->
             DaggerRepositoryCartDependencyInjector.builder()
@@ -61,6 +62,7 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
 
     fun initialize() {
         adapter.addAll(ShoppingCartNew.domains)
+        updateButton()
     }
 
     fun onPayNowClicked() {
@@ -71,6 +73,18 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
         adapter.remove(view.tag as Int)
         adapter.notifyDataSetChanged()
         ShoppingCartNew.domains.removeAt(view.tag as Int)
+        updateButton()
+    }
+
+    private fun updateButton() {
+        val buttonView = cartCallbacks.fetchCartRootView().select_button
+        if (ShoppingCartNew.domains.size == 0) {
+            buttonView.setBackgroundColor(Color.LTGRAY)
+            clickable.set(false)
+        } else {
+            buttonView.setBackgroundColor(Color.BLACK)
+            clickable.set(true)
+        }
     }
 
 }

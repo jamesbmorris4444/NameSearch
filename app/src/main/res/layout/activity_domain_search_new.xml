@@ -10,6 +10,7 @@
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginVertical="16dp"
@@ -52,9 +53,9 @@
         android:id="@+id/results_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        app:layout_height_dynamic="@{searchViewModel.listHeight}"
         android:visibility="@{searchViewModel.listIsVisible}"
-        android:paddingBottom="50dp"
+        android:paddingBottom="30dp"
         android:clipToPadding="false"
         app:recyclerViewViewModel="@{searchViewModel}"
         app:layout_constraintTop_toBottomOf="@id/search_edit_text"
@@ -68,7 +69,6 @@
         android:layout_height="60dp"
         android:onClick="@{() -> searchViewModel.onContinueClicked()}"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="Continue to Cart" />
     

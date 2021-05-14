@@ -5,14 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.R
 import com.godaddy.namesearch.cart_screen.CartNewActivity
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.Repository
@@ -20,10 +18,8 @@ import com.godaddy.namesearch.repository.storage.Domain
 import com.godaddy.namesearch.repository.storage.DomainSearchExactMatchResponse
 import com.godaddy.namesearch.repository.storage.DomainSearchRecommendedResponse
 import com.godaddy.namesearch.repository.storage.ShoppingCartNew
-import com.godaddy.namesearch.utils.DaggerRepositorySearchDependencyInjector
-import com.godaddy.namesearch.utils.RepositorySearchInjectorModule
-import com.godaddy.namesearch.utils.SearchCallbacks
-import com.godaddy.namesearch.utils.Utils
+import com.godaddy.namesearch.utils.*
+import kotlinx.android.synthetic.main.activity_domain_search_new.view.*
 import javax.inject.Inject
 
 
@@ -40,12 +36,11 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     @Inject
     lateinit var repository: Repository
 
-    var searchTextInputEditText: ObservableField<String> = ObservableField("")
-    fun searchTextInputEditTextChanged(string: CharSequence, start: Int, before: Int, count: Int) { }
+    var searchTextInputEditText: NonNullObservableField<String> = NonNullObservableField("")
     val listIsVisible: ObservableField<Int> = ObservableField(View.GONE)
+    val listHeight: ObservableField<Int> = ObservableField(0)
     override var adapter: SearchAdapter = SearchAdapter(searchCallbacks)
-    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(searchCallbacks.fetchSearchActivity(), LinearLayout.VERTICAL)
-
+    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(getApplication<Application>().applicationContext, LinearLayout.VERTICAL)
     private var adapterList: MutableList<Domain> = mutableListOf()
 
     init {
@@ -55,6 +50,8 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
                 .build()
                 .inject(this)
         }
+        searchCallbacks.fetchSearchRootView().view_cart_button.isEnabled = false
+        searchCallbacks.fetchSearchRootView().search_button.isEnabled = false
     }
 
     override fun setLayoutManager(): RecyclerView.LayoutManager {
@@ -69,33 +66,40 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
         }
     }
 
+    fun initialize() {
+        listHeight.set(searchCallbacks.fetchSearchActivity().listHeight)
+    }
+
+    fun searchTextInputEditTextChanged(string: CharSequence, start: Int, before: Int, count: Int) {
+        searchCallbacks.fetchSearchRootView().search_button.isEnabled = string.isNotEmpty()
+    }
+
     fun onContinueClicked() {
         searchCallbacks.fetchSearchActivity().startActivity(Intent(searchCallbacks.fetchSearchActivity(), CartNewActivity::class.java))
     }
 
     fun onSearchClicked(view: View) {
-        val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
-        progressBar.visibility = View.VISIBLE
-        searchTextInputEditText.get()?.let { query ->
-            repository.getExactListDomains(query, progressBar, this::showExactList)
+        if (searchTextInputEditText.get().isNotEmpty()) {
+            searchCallbacks.fetchSearchRootView().search_progress_bar.visibility = View.VISIBLE
+            repository.getExactListDomains(searchTextInputEditText.get(), this::showExactList)
         }
         Utils.hideKeyboard(view)
     }
 
     private fun showExactList(domainsExactListResponse: DomainSearchExactMatchResponse) {
+        adapterList.clear()
         adapterList.add(Domain(name = domainsExactListResponse.domain.fqdn, price = domainsExactListResponse.products[0].priceInfo.currentPriceDisplay, productId = 0, selected = false))
         getRecommended()
     }
 
     private fun getRecommended() {
-        val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
-        progressBar.visibility = View.VISIBLE
-        searchTextInputEditText.get()?.let { query ->
-            repository.getSpinsListDomains(query, progressBar, this::showSpinsList)
+        if (searchTextInputEditText.get().isNotEmpty()) {
+            repository.getSpinsListDomains(searchTextInputEditText.get(), this::showSpinsList)
         }
     }
 
     private fun showSpinsList(domainsSpinsListResponse: DomainSearchRecommendedResponse) {
+        searchCallbacks.fetchSearchRootView().search_progress_bar.visibility = View.GONE
         for (index in domainsSpinsListResponse.domains.indices) {
             if (index >= domainsSpinsListResponse.products.size) {
                 adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = "0.00", productId = 0, selected = false))
@@ -105,6 +109,7 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
         }
         adapter.addAll(adapterList)
         listIsVisible.set(View.VISIBLE)
+        updateButton()
     }
 
     fun onItemClicked(view: View) {
@@ -118,6 +123,11 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
                 view.setBackgroundColor(Color.LTGRAY)
             }
         }
+        updateButton()
+    }
+
+    private fun updateButton() {
+        searchCallbacks.fetchSearchRootView().view_cart_button.isEnabled = ShoppingCartNew.domains.size > 0
     }
 
 }

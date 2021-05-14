@@ -3,7 +3,6 @@ package com.godaddy.namesearch.cart_screen
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.databinding.DataBindingUtil
 import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemCartNewBinding
@@ -12,6 +11,7 @@ import com.godaddy.namesearch.repository.storage.Domain
 import com.godaddy.namesearch.utils.CartCallbacks
 import com.godaddy.namesearch.utils.DaggerRepositoryCartDependencyInjector
 import com.godaddy.namesearch.utils.RepositoryCartInjectorModule
+import kotlinx.android.synthetic.main.item_cart_new.view.*
 
 
 class CartAdapter(private val cartCallbacks: CartCallbacks) : RecyclerViewFilterAdapter<Domain, CartItemViewModel>() {
@@ -46,7 +46,7 @@ class CartAdapter(private val cartCallbacks: CartCallbacks) : RecyclerViewFilter
 
     override fun onBindViewHolder(holder: ItemViewHolder<Domain, CartItemViewModel>, position: Int) {
         super.onBindViewHolder(holder, position)
-        val buttonView = holder.itemView.findViewById(R.id.remove_button) as ImageButton
+        val buttonView = holder.itemView.remove_button
         buttonView.tag = position
     }
 

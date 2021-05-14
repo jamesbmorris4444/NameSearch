@@ -21,16 +21,12 @@ interface APIInterfaceLoginPOST {
 
 interface APIInterfaceExactGET {
     @GET(EXACT_PARAM)
-    fun getExactDomains(
-        @Query(QUERY_PARAM) query: String
-    ): Single<DomainSearchExactMatchResponse>
+    fun getExactDomains(@Query(QUERY_PARAM) query: String): Single<DomainSearchExactMatchResponse>
 }
 
 interface APIInterfaceSpinsGET {
     @GET(SPINS_PARAM)
-    fun getSpinsDomains(
-        @Query(QUERY_PARAM) query: String
-    ): Single<DomainSearchRecommendedResponse>
+    fun getSpinsDomains(@Query(QUERY_PARAM) query: String): Single<DomainSearchRecommendedResponse>
 }
 
 interface APIInterfacePaymentsGET {

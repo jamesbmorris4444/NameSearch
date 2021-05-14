@@ -1,7 +1,5 @@
 package com.godaddy.namesearch.repository
 
-import android.view.View
-import android.widget.ProgressBar
 import com.godaddy.namesearch.repository.network.*
 import com.godaddy.namesearch.repository.storage.*
 import io.reactivex.Completable
@@ -19,50 +17,54 @@ class Repository {
     private val apiInterfaceProcessPost: APIInterfaceProcessPOST = APIClient.PaymentProcessingPostClient
     private lateinit var disposable: Disposable
 
-    fun postLogin(request: LoginRequest, progressBar: ProgressBar, processLogin: (loginResponse: LoginResponse) -> Unit) {
+    fun postLogin(request: LoginRequest, processLogin: (loginResponse: LoginResponse) -> Unit) {
         disposable = apiInterfaceLoginPost.login(request)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
-            .subscribe{ loginResponse ->
+            .subscribe({ loginResponse ->
                 disposable.dispose()
-                progressBar.visibility = View.GONE
                 processLogin(loginResponse)
-            }
+            },
+            { throwable ->
+                disposable.dispose()
+                throwable.message?.let {
+                    processLogin(LoginResponse(Auth(it), User("", "")))
+                } ?: run {
+                    processLogin(LoginResponse(Auth(""), User("", "")))
+                }
+            })
     }
 
-    fun getExactListDomains(query: String, progressBar: ProgressBar, showExactList: (exactResponse: DomainSearchExactMatchResponse) -> Unit) {
+    fun getExactListDomains(query: String, showExactList: (exactResponse: DomainSearchExactMatchResponse) -> Unit) {
         disposable = apiInterfaceExactGET.getExactDomains(query)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
             .subscribe{ exactResponse ->
                 disposable.dispose()
-                progressBar.visibility = View.GONE
                 showExactList(exactResponse)
             }
     }
 
-    fun getSpinsListDomains(query: String, progressBar: ProgressBar, showSpinsList: (spinsResponse: DomainSearchRecommendedResponse) -> Unit) {
+    fun getSpinsListDomains(query: String, showSpinsList: (spinsResponse: DomainSearchRecommendedResponse) -> Unit) {
         disposable = apiInterfaceSpinsGET.getSpinsDomains(query)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
             .subscribe{ spinsResponse ->
                 disposable.dispose()
-                progressBar.visibility = View.GONE
                 showSpinsList(spinsResponse)
             }
     }
 
-    fun getPaymentMethods(progressBar: ProgressBar, showPaymentsList: (paymentsResponse: List<PaymentMethod>) -> Unit) {
+    fun getPaymentMethods(showPaymentsList: (paymentsResponse: List<PaymentMethod>) -> Unit) {
         disposable = apiInterfacePaymentsGET.getPaymentsList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
             .subscribe{ paymentsResponse ->
                 disposable.dispose()
-                progressBar.visibility = View.GONE
                 showPaymentsList(paymentsResponse)
             }
     }
@@ -73,6 +75,7 @@ class Repository {
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
             .subscribe{
+                disposable.dispose()
                 processPayment()
             }
     }
