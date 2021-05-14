@@ -9,23 +9,12 @@ import com.godaddy.namesearch.databinding.ItemCartNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.Domain
 import com.godaddy.namesearch.utils.CartCallbacks
-import com.godaddy.namesearch.utils.DaggerRepositoryCartDependencyInjector
-import com.godaddy.namesearch.utils.RepositoryCartInjectorModule
 import kotlinx.android.synthetic.main.item_cart_new.view.*
 
 
 class CartAdapter(private val cartCallbacks: CartCallbacks) : RecyclerViewFilterAdapter<Domain, CartItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
-
-    init {
-        cartCallbacks.fetchCartActivity()?.let { activity ->
-            DaggerRepositoryCartDependencyInjector.builder()
-                .repositoryCartInjectorModule(RepositoryCartInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
-    }
 
     override fun getFilter(): AdapterFilter {
         adapterFilter?.let {

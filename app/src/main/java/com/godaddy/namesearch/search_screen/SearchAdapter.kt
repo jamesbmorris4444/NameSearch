@@ -8,23 +8,12 @@ import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemDomainResultNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.Domain
-import com.godaddy.namesearch.utils.DaggerRepositorySearchDependencyInjector
-import com.godaddy.namesearch.utils.RepositorySearchInjectorModule
 import com.godaddy.namesearch.utils.SearchCallbacks
 
 
 class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerViewFilterAdapter<Domain, SearchItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
-
-    init {
-        searchCallbacks.fetchSearchActivity()?.let { activity ->
-            DaggerRepositorySearchDependencyInjector.builder()
-                .repositorySearchInjectorModule(RepositorySearchInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
-    }
 
     override fun getFilter(): AdapterFilter {
         adapterFilter?.let {

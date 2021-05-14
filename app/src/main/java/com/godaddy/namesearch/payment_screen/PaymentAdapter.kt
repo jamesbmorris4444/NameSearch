@@ -8,23 +8,12 @@ import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemPaymentNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.PaymentMethod
-import com.godaddy.namesearch.utils.DaggerRepositoryPaymentDependencyInjector
 import com.godaddy.namesearch.utils.PaymentCallbacks
-import com.godaddy.namesearch.utils.RepositoryPaymentInjectorModule
 
 
 class PaymentAdapter(private val paymentCallbacks: PaymentCallbacks) : RecyclerViewFilterAdapter<PaymentMethod, PaymentItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
-
-    init {
-        paymentCallbacks.fetchPaymentActivity()?.let { activity ->
-            DaggerRepositoryPaymentDependencyInjector.builder()
-                .repositoryPaymentInjectorModule(RepositoryPaymentInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
-    }
 
     override fun getFilter(): AdapterFilter {
         adapterFilter?.let {
