@@ -4,9 +4,9 @@ import android.view.View
 import androidx.databinding.ObservableField
 import com.godaddy.namesearch.recyclerview.RecyclerViewItemViewModel
 import com.godaddy.namesearch.repository.storage.Domain
-import com.godaddy.namesearch.utils.CartCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 
-class CartItemViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewItemViewModel<Domain>() {
+class CartItemViewModel(private val getFragment: GetFragment) : RecyclerViewItemViewModel<Domain>() {
 
     val name: ObservableField<String> = ObservableField("")
     val price: ObservableField<String> = ObservableField("")
@@ -17,7 +17,7 @@ class CartItemViewModel(private val cartCallbacks: CartCallbacks) : RecyclerView
     }
 
     fun onRemoveClicked(view: View) {
-        cartCallbacks.fetchCartActivity().cartViewModel.onRemoveClicked(view)
+        (getFragment.getFragment() as CartFragment).cartViewModel.onRemoveClicked(view)
     }
 
 }

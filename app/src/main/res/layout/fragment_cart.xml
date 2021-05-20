@@ -26,7 +26,7 @@
     <Button
         android:id="@+id/select_button"
         android:text="SELECT A PAYMENT_METHOD"
-        android:clickable="@{cartViewModel.clickable}"
+        android:enabled="@{cartViewModel.isSelectEnabled}"
         android:onClick="@{() -> cartViewModel.onPayNowClicked()}"
         android:layout_width="match_parent"
         android:layout_height="60dp"

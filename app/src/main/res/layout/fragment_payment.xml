@@ -28,27 +28,13 @@
     <Button
         android:id="@+id/pay_now_button"
         android:text="@{paymentViewModel.totalPrice}"
+        android:enabled="@{paymentViewModel.isPayNowEnabled}"
+        app:background_color="@{paymentViewModel.backgroundColor}"
         android:onClick="@{() -> paymentViewModel.onSelectPaymentClicked()}"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    
-    <ProgressBar
-        android:id="@+id/payment_progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:visibility="gone"
-        android:indeterminateTint="#ff0000"
-        android:layout_centerInParent="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:max="100"
-        android:indeterminate="true"
-        android:progress="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

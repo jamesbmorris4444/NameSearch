@@ -1,8 +1,6 @@
 package com.godaddy.namesearch.cart_screen
 
 import android.app.Application
-import android.content.Intent
-import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
 import androidx.databinding.ObservableField
@@ -11,42 +9,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.payment_screen.PaymentNewActivity
+import com.godaddy.namesearch.activity.MainActivity
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
-import com.godaddy.namesearch.repository.Repository
 import com.godaddy.namesearch.repository.storage.ShoppingCartNew
-import com.godaddy.namesearch.utils.CartCallbacks
-import com.godaddy.namesearch.utils.DaggerRepositoryCartDependencyInjector
-import com.godaddy.namesearch.utils.RepositoryCartInjectorModule
-import kotlinx.android.synthetic.main.activity_cart_new.view.*
-import javax.inject.Inject
+import com.godaddy.namesearch.utils.GetFragment
 
 
 @Suppress("UNCHECKED_CAST")
-class CartViewModelFactory(private val cartCallbacks: CartCallbacks) : ViewModelProvider.Factory {
+class CartViewModelFactory(private val getFragment: GetFragment) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CartViewModel(cartCallbacks) as T
+        return CartViewModel(getFragment) as T
     }
 }
 
 @Suppress("UNCHECKED_CAST")
-class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewViewModel(cartCallbacks.fetchCartActivity().application) {
+class CartViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getFragment().requireActivity().application) {
 
-    @Inject
-    lateinit var repository: Repository
-
-    override var adapter: CartAdapter = CartAdapter(cartCallbacks)
-    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(cartCallbacks.fetchCartActivity(), LinearLayout.VERTICAL)
-    val clickable: ObservableField<Boolean> = ObservableField(false)
-
-    init {
-        cartCallbacks.fetchCartActivity()?.let { activity ->
-            DaggerRepositoryCartDependencyInjector.builder()
-                .repositoryCartInjectorModule(RepositoryCartInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
-    }
+    override var adapter: CartAdapter = CartAdapter(getFragment)
+    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(getApplication<Application>().applicationContext, LinearLayout.VERTICAL)
+    val isSelectEnabled: ObservableField<Boolean> = ObservableField(false)
 
     override fun setLayoutManager(): RecyclerView.LayoutManager {
         return object : LinearLayoutManager(getApplication<Application>().applicationContext) {
@@ -66,7 +47,7 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
     }
 
     fun onPayNowClicked() {
-        cartCallbacks.fetchCartActivity().startActivity(Intent(cartCallbacks.fetchCartActivity(), PaymentNewActivity::class.java))
+        (getFragment.getFragment().requireActivity() as MainActivity).loadPaymentFragment()
     }
 
     fun onRemoveClicked(view: View) {
@@ -77,13 +58,10 @@ class CartViewModel(private val cartCallbacks: CartCallbacks) : RecyclerViewView
     }
 
     private fun updateButton() {
-        val buttonView = cartCallbacks.fetchCartRootView().select_button
         if (ShoppingCartNew.domains.size == 0) {
-            buttonView.setBackgroundColor(Color.LTGRAY)
-            clickable.set(false)
+            isSelectEnabled.set(false)
         } else {
-            buttonView.setBackgroundColor(Color.BLACK)
-            clickable.set(true)
+            isSelectEnabled.set(true)
         }
     }
 

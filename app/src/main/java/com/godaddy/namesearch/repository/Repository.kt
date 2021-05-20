@@ -8,7 +8,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class Repository {
+object Repository {
 
     private val apiInterfaceLoginPost: APIInterfaceLoginPOST = APIClient.loginPostClient
     private val apiInterfaceExactGET: APIInterfaceExactGET = APIClient.getExactList

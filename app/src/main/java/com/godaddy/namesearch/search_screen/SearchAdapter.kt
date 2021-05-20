@@ -8,10 +8,10 @@ import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemDomainResultNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.Domain
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 
 
-class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerViewFilterAdapter<Domain, SearchItemViewModel>() {
+class SearchAdapter(private val getFragment: GetFragment) : RecyclerViewFilterAdapter<Domain, SearchItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
 
@@ -24,7 +24,7 @@ class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainViewHolder {
         val domainListItemBinding: ItemDomainResultNewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_domain_result_new, parent, false)
-        val domainItemViewModel = SearchItemViewModel(searchCallbacks)
+        val domainItemViewModel = SearchItemViewModel(getFragment)
         domainListItemBinding.searchItemViewModel = domainItemViewModel
         return DomainViewHolder(domainListItemBinding.root, domainItemViewModel, domainListItemBinding)
     }

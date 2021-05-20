@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="mainActivity"
+            type="com.godaddy.namesearch.activity.MainActivity" />
+    </data>
+    
+    <RelativeLayout
+        android:id="@+id/main_activity_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <FrameLayout
+            android:id="@+id/main_activity_container"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+        <ProgressBar
+            android:id="@+id/main_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:visibility="@{mainActivity.progressBarVisibility}"
+            android:indeterminateTint="@color/design_default_color_primary"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:max="100"
+            android:indeterminate="true"
+            android:progress="1" />
+    
+    </RelativeLayout>
+
+</layout>

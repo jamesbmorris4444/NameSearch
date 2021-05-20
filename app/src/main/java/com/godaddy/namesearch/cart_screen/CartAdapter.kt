@@ -8,11 +8,11 @@ import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemCartNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.Domain
-import com.godaddy.namesearch.utils.CartCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 import kotlinx.android.synthetic.main.item_cart_new.view.*
 
 
-class CartAdapter(private val cartCallbacks: CartCallbacks) : RecyclerViewFilterAdapter<Domain, CartItemViewModel>() {
+class CartAdapter(private val getFragment: GetFragment) : RecyclerViewFilterAdapter<Domain, CartItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
 
@@ -25,7 +25,7 @@ class CartAdapter(private val cartCallbacks: CartCallbacks) : RecyclerViewFilter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainViewHolder {
         val cartListItemBinding: ItemCartNewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_new, parent, false)
-        val cartItemViewModel = CartItemViewModel(cartCallbacks)
+        val cartItemViewModel = CartItemViewModel(getFragment)
         cartListItemBinding.cartItemViewModel = cartItemViewModel
         return DomainViewHolder(cartListItemBinding.root, cartItemViewModel, cartListItemBinding)
     }

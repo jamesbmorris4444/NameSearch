@@ -4,9 +4,9 @@ import android.view.View
 import androidx.databinding.ObservableField
 import com.godaddy.namesearch.recyclerview.RecyclerViewItemViewModel
 import com.godaddy.namesearch.repository.storage.Domain
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 
-class SearchItemViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerViewItemViewModel<Domain>() {
+class SearchItemViewModel(private val getFragment: GetFragment) : RecyclerViewItemViewModel<Domain>() {
 
     val name: ObservableField<String> = ObservableField("")
     val price: ObservableField<String> = ObservableField("")
@@ -17,7 +17,7 @@ class SearchItemViewModel(private val searchCallbacks: SearchCallbacks) : Recycl
     }
 
     fun onItemClicked(view: View) {
-        searchCallbacks.fetchSearchActivity().searchViewModel.onItemClicked(view)
+        (getFragment.getFragment() as SearchFragment).searchViewModel.onItemClicked(view)
     }
 
 }

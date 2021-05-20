@@ -4,9 +4,9 @@ import android.view.View
 import androidx.databinding.ObservableField
 import com.godaddy.namesearch.recyclerview.RecyclerViewItemViewModel
 import com.godaddy.namesearch.repository.storage.PaymentMethod
-import com.godaddy.namesearch.utils.PaymentCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 
-class PaymentItemViewModel(private val paymentCallbacks: PaymentCallbacks) : RecyclerViewItemViewModel<PaymentMethod>() {
+class PaymentItemViewModel(private val getFragment: GetFragment) : RecyclerViewItemViewModel<PaymentMethod>() {
 
     val name: ObservableField<String> = ObservableField("")
     val lastFour: ObservableField<String> = ObservableField("")
@@ -21,7 +21,7 @@ class PaymentItemViewModel(private val paymentCallbacks: PaymentCallbacks) : Rec
     }
 
     fun onItemClicked(view: View) {
-        paymentCallbacks.fetchPaymentActivity().paymentViewModel.onItemClicked(view)
+        (getFragment.getFragment() as PaymentFragment).paymentViewModel.onItemClicked(view)
     }
 
 }

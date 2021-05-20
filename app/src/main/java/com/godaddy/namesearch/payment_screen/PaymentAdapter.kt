@@ -8,10 +8,10 @@ import com.godaddy.namesearch.R
 import com.godaddy.namesearch.databinding.ItemPaymentNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
 import com.godaddy.namesearch.repository.storage.PaymentMethod
-import com.godaddy.namesearch.utils.PaymentCallbacks
+import com.godaddy.namesearch.utils.GetFragment
 
 
-class PaymentAdapter(private val paymentCallbacks: PaymentCallbacks) : RecyclerViewFilterAdapter<PaymentMethod, PaymentItemViewModel>() {
+class PaymentAdapter(private val getFragment: GetFragment) : RecyclerViewFilterAdapter<PaymentMethod, PaymentItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
 
@@ -24,7 +24,7 @@ class PaymentAdapter(private val paymentCallbacks: PaymentCallbacks) : RecyclerV
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainViewHolder {
         val paymentListItemBinding: ItemPaymentNewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_payment_new, parent, false)
-        val paymentItemViewModel = PaymentItemViewModel(paymentCallbacks)
+        val paymentItemViewModel = PaymentItemViewModel(getFragment)
         paymentListItemBinding.paymentItemViewModel = paymentItemViewModel
         return DomainViewHolder(paymentListItemBinding.root, paymentItemViewModel, paymentListItemBinding)
     }

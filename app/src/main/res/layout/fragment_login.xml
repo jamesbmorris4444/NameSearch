@@ -69,18 +69,6 @@
         android:onClick="@{() -> loginViewModel.onLoginClicked()}"
         android:layout_alignParentBottom="true"
         android:text="Login" />
-    
-    <ProgressBar
-        android:id="@+id/main_progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:visibility="gone"
-        android:indeterminateTint="#ff0000"
-        android:layout_centerInParent="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:max="100"
-        android:indeterminate="true"
-        android:progress="1" />
 
 </RelativeLayout>
 </layout>
