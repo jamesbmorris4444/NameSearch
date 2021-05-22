@@ -13,7 +13,7 @@ import com.godaddy.namesearch.utils.BaseFragment
 
 class LoginFragment : BaseFragment() {
 
-    lateinit var loginViewModel: LoginViewModel
+    private lateinit var loginViewModel: LoginViewModel
 
     companion object {
         fun newInstance(): LoginFragment { return LoginFragment() }
