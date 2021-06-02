@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.godaddy.namesearch.R
-import com.godaddy.namesearch.activity.MainActivity
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.Repository
 import com.godaddy.namesearch.repository.storage.*
@@ -29,7 +28,7 @@ class PaymentViewModelFactory(private val getFragment: GetFragment) : ViewModelP
 }
 
 @Suppress("UNCHECKED_CAST")
-class PaymentViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getFragment().requireActivity().application) {
+class PaymentViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getNonNullActivity().application) {
 
     override var adapter: PaymentAdapter = PaymentAdapter(getFragment)
     override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(getApplication<Application>().applicationContext, LinearLayout.VERTICAL)
@@ -51,13 +50,13 @@ class PaymentViewModel(private val getFragment: GetFragment) : RecyclerViewViewM
 
     fun initialize() {
         totalPrice.set(updatePayButton())
-        (getFragment.getFragment().requireActivity() as MainActivity).progressBarVisibility.set(View.GONE)
+        getFragment.getNonNullActivity().progressBarVisibility.set(View.GONE)
         Repository.getPaymentMethods(this::showPaymentsList)
         isPayNowEnabled.set(false)
     }
 
     private fun showPaymentsList(paymentMethodList: List<PaymentMethod>) {
-        (getFragment.getFragment().requireActivity() as MainActivity).progressBarVisibility.set(View.GONE)
+        getFragment.getNonNullActivity().progressBarVisibility.set(View.GONE)
         this.paymentMethodList = paymentMethodList
         adapter.addAll(paymentMethodList)
     }
@@ -75,7 +74,7 @@ class PaymentViewModel(private val getFragment: GetFragment) : RecyclerViewViewM
     }
 
     private fun processPayment() {
-        AlertDialog.Builder(getFragment.getFragment().requireActivity())
+        AlertDialog.Builder(getFragment.getNonNullActivity())
             .setTitle("All done!")
             .setMessage("Your purchase is complete!")
             .show()

@@ -16,9 +16,14 @@ class PaymentFragment : BaseFragment() {
 
     lateinit var paymentViewModel: PaymentViewModel
     var selectedPaymentMethodView: View? = null
+    private var position = 0
 
     companion object {
-        fun newInstance(): PaymentFragment { return PaymentFragment() }
+        fun newInstance(position: Int): PaymentFragment {
+            val fragment = PaymentFragment()
+            fragment.position = position
+            return fragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

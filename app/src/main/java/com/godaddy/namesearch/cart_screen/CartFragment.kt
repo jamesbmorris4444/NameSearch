@@ -15,9 +15,14 @@ import com.godaddy.namesearch.utils.BaseFragment
 class CartFragment : BaseFragment() {
 
     lateinit var cartViewModel: CartViewModel
+    private var position = 0
 
     companion object {
-        fun newInstance(): CartFragment { return CartFragment() }
+        fun newInstance(position: Int): CartFragment {
+            val fragment = CartFragment()
+            fragment.position = position
+            return fragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

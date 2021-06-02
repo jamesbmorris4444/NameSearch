@@ -30,7 +30,7 @@ class SearchViewModelFactory(private val getFragment: GetFragment) : ViewModelPr
 }
 
 @Suppress("UNCHECKED_CAST")
-class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getFragment().requireActivity().application) {
+class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getNonNullActivity().application) {
 
     var searchTextInputEditText: NonNullObservableField<String> = NonNullObservableField("")
     val listIsVisible: ObservableField<Int> = ObservableField(View.GONE)
@@ -62,12 +62,12 @@ class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewMo
     }
 
     fun onContinueClicked() {
-        (getFragment.getFragment().requireActivity() as MainActivity).loadCartFragment()
+        getFragment.getNonNullActivity().loadCartFragment()
     }
 
     fun onSearchClicked(view: View) {
         if (searchTextInputEditText.get().isNotEmpty()) {
-            (getFragment.getFragment().requireActivity() as MainActivity).progressBarVisibility.set(View.VISIBLE)
+            getFragment.getNonNullActivity().progressBarVisibility.set(View.VISIBLE)
             Repository.getExactListDomains(searchTextInputEditText.get(), this::showExactList)
         }
         Utils.hideKeyboard(view)
@@ -86,7 +86,7 @@ class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewMo
     }
 
     private fun showSpinsList(domainsSpinsListResponse: DomainSearchRecommendedResponse) {
-        (getFragment.getFragment().requireActivity() as MainActivity).progressBarVisibility.set(View.GONE)
+        getFragment.getNonNullActivity().progressBarVisibility.set(View.GONE)
         for (index in domainsSpinsListResponse.domains.indices) {
             if (index >= domainsSpinsListResponse.products.size) {
                 adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = "0.00", productId = 0, selected = false))

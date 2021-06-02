@@ -17,9 +17,14 @@ class SearchFragment : BaseFragment() {
 
     lateinit var searchViewModel: SearchViewModel
     private var preDrawComplete = false
+    private var position = 0
 
     companion object {
-        fun newInstance(): SearchFragment { return SearchFragment() }
+        fun newInstance(position: Int): SearchFragment {
+            val fragment = SearchFragment()
+            fragment.position = position
+            return fragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

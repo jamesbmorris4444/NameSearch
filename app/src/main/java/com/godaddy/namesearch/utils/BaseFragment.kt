@@ -24,4 +24,12 @@ open class BaseFragment : Fragment(), GetFragment {
         return this
     }
 
+    override fun getNonNullActivity(): MainActivity {
+        return if (::mainActivity.isInitialized) {
+            mainActivity
+        } else {
+            activity as MainActivity
+        }
+    }
+
 }

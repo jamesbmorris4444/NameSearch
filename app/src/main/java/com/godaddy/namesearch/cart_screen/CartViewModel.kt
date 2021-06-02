@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.activity.MainActivity
 import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.storage.ShoppingCartNew
 import com.godaddy.namesearch.utils.GetFragment
@@ -23,7 +22,7 @@ class CartViewModelFactory(private val getFragment: GetFragment) : ViewModelProv
 }
 
 @Suppress("UNCHECKED_CAST")
-class CartViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getFragment().requireActivity().application) {
+class CartViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getNonNullActivity().application) {
 
     override var adapter: CartAdapter = CartAdapter(getFragment)
     override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(getApplication<Application>().applicationContext, LinearLayout.VERTICAL)
@@ -47,7 +46,7 @@ class CartViewModel(private val getFragment: GetFragment) : RecyclerViewViewMode
     }
 
     fun onPayNowClicked() {
-        (getFragment.getFragment().requireActivity() as MainActivity).loadPaymentFragment()
+        getFragment.getNonNullActivity().loadPaymentFragment()
     }
 
     fun onRemoveClicked(view: View) {
