@@ -34,7 +34,7 @@ abstract class RecyclerViewFilterAdapter<T, VM : RecyclerViewItemViewModel<T>> :
     }
 
     fun addAll(toAddList: List<T>) {
-        clearAll()
+        //clearAll()
         itemListFiltered.addAll(toAddList)
         if (isFiltering()) {
             adapterFilter?.filter()
@@ -129,5 +129,7 @@ abstract class RecyclerViewFilterAdapter<T, VM : RecyclerViewItemViewModel<T>> :
             return constraint
         }
     }
+
+
 
 }

@@ -58,7 +58,6 @@
         android:visibility="@{searchViewModel.listIsVisible}"
         android:paddingBottom="30dp"
         android:clipToPadding="false"
-        app:recyclerViewViewModel="@{searchViewModel}"
         app:layout_constraintTop_toBottomOf="@id/search_edit_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/view_cart_button"

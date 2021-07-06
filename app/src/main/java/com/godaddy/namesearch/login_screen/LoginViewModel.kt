@@ -37,8 +37,8 @@ class LoginViewModel(private val getFragment: GetFragment) : AndroidViewModel(ge
         getFragment.getNonNullActivity().progressBarVisibility.set(View.GONE)
         AuthManagerNew.user = loginResponse.user
         AuthManagerNew.token = loginResponse.auth.token
-        //getFragment.getNonNullActivity().loadSearchFragment()
-        getFragment.getNonNullActivity().loadViewPagerFragment()
+        getFragment.getNonNullActivity().loadSearchFragment()
+        //getFragment.getNonNullActivity().loadViewPagerFragment()
     }
 
 }

@@ -1,17 +1,11 @@
 package com.godaddy.namesearch.search_screen
 
-import android.app.Application
 import android.graphics.Color
 import android.view.View
-import android.widget.LinearLayout
 import androidx.databinding.ObservableField
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.activity.MainActivity
-import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
 import com.godaddy.namesearch.repository.Repository
 import com.godaddy.namesearch.repository.storage.Domain
 import com.godaddy.namesearch.repository.storage.DomainSearchExactMatchResponse
@@ -30,28 +24,13 @@ class SearchViewModelFactory(private val getFragment: GetFragment) : ViewModelPr
 }
 
 @Suppress("UNCHECKED_CAST")
-class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewModel(getFragment.getNonNullActivity().application) {
+class SearchViewModel(private val getFragment: GetFragment) : AndroidViewModel(getFragment.getNonNullActivity().application) {
 
     var searchTextInputEditText: NonNullObservableField<String> = NonNullObservableField("")
     val listIsVisible: ObservableField<Int> = ObservableField(View.GONE)
     val listHeight: ObservableField<Int> = ObservableField(0)
     val isSearchEnabled: ObservableField<Boolean> = ObservableField(false)
     val isContinueEnabled: ObservableField<Boolean> = ObservableField(false)
-    override var adapter: SearchAdapter = SearchAdapter(getFragment)
-    override val itemDecorator: RecyclerView.ItemDecoration? = DividerItemDecoration(getApplication<Application>().applicationContext, LinearLayout.VERTICAL)
-    private var adapterList: MutableList<Domain> = mutableListOf()
-
-    override fun setLayoutManager(): RecyclerView.LayoutManager {
-        return object : LinearLayoutManager(getApplication<Application>().applicationContext) {
-            override fun canScrollHorizontally(): Boolean {
-                return false
-            }
-
-            override fun canScrollVertically(): Boolean {
-                return true
-            }
-        }
-    }
 
     fun initialize(height: Int) {
         listHeight.set(height)
@@ -74,8 +53,8 @@ class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewMo
     }
 
     private fun showExactList(domainsExactListResponse: DomainSearchExactMatchResponse) {
-        adapterList.clear()
-        adapterList.add(Domain(name = domainsExactListResponse.domain.fqdn, price = domainsExactListResponse.products[0].priceInfo.currentPriceDisplay, productId = 0, selected = false))
+        (getFragment.getFragment() as SearchFragment).adapterList.clear()
+        (getFragment.getFragment() as SearchFragment).adapterList.add(Domain(name = domainsExactListResponse.domain.fqdn, price = domainsExactListResponse.products[0].priceInfo.currentPriceDisplay, productId = 0, selected = false))
         getRecommended()
     }
 
@@ -89,18 +68,18 @@ class SearchViewModel(private val getFragment: GetFragment) : RecyclerViewViewMo
         getFragment.getNonNullActivity().progressBarVisibility.set(View.GONE)
         for (index in domainsSpinsListResponse.domains.indices) {
             if (index >= domainsSpinsListResponse.products.size) {
-                adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = "0.00", productId = 0, selected = false))
+                (getFragment.getFragment() as SearchFragment).adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = "0.00", productId = 0, selected = false))
             } else {
-                adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = domainsSpinsListResponse.products[index].priceInfo.currentPriceDisplay, productId = 0, selected = false))
+                (getFragment.getFragment() as SearchFragment).adapterList.add(Domain(name = domainsSpinsListResponse.domains[index].fqdn, price = domainsSpinsListResponse.products[index].priceInfo.currentPriceDisplay, productId = 0, selected = false))
             }
         }
-        adapter.addAll(adapterList)
+        //adapter.addAll(adapterList)
         listIsVisible.set(View.VISIBLE)
         updateButton()
     }
 
     fun onItemClicked(view: View) {
-        val item: Domain = adapterList[view.tag as Int]
+        val item: Domain = (getFragment.getFragment() as SearchFragment).adapterList[view.tag as Int]
         ShoppingCartNew.domains = ShoppingCartNew.domains.toMutableList().also {
             if (ShoppingCartNew.domains.contains(item)) {
                 it.remove(item)
