@@ -134,9 +134,11 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
             adapterList.add(newsResponse.articles[index])
         }
         adapter.addAll(adapterList)
-        Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[0].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.image))
-        searchCallbacks.fetchSearchRootView().findViewById<TextView>(R.id.author).text = newsResponse.articles[0].author
-        searchCallbacks.fetchSearchRootView().findViewById<TextView>(R.id.title).text = newsResponse.articles[0].title
+        if (newsResponse.articles.isNotEmpty()) {
+            Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[0].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.image))
+            searchCallbacks.fetchSearchRootView().findViewById<TextView>(R.id.author).text = newsResponse.articles[0].author
+            searchCallbacks.fetchSearchRootView().findViewById<TextView>(R.id.title).text = newsResponse.articles[0].title
+        }
     }
 
     fun onBackClicked() {

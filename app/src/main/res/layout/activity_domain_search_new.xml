@@ -97,7 +97,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:clipToPadding="false"
-                android:paddingBottom="350dp"
+                android:paddingBottom="400dp"
                 app:recyclerViewViewModel="@{searchViewModel}"
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 app:layout_constraintStart_toStartOf="parent"
