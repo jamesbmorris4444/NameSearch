@@ -1,17 +1,17 @@
-package com.godaddy.namesearch.search_screen
+package com.brillio.newsfeed.search_screen
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.godaddy.namesearch.R
-import com.godaddy.namesearch.databinding.ItemNewsFeedResultNewBinding
-import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
-import com.godaddy.namesearch.repository.storage.NewsArticleItem
-import com.godaddy.namesearch.utils.DaggerRepositorySearchDependencyInjector
-import com.godaddy.namesearch.utils.RepositorySearchInjectorModule
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.brillio.newsfeed.R
+import com.brillio.newsfeed.databinding.ItemNewsFeedResultNewBinding
+import com.brillio.newsfeed.recyclerview.RecyclerViewFilterAdapter
+import com.brillio.newsfeed.repository.storage.NewsArticleItem
+import com.brillio.newsfeed.utils.DaggerRepositorySearchDependencyInjector
+import com.brillio.newsfeed.utils.RepositorySearchInjectorModule
+import com.brillio.newsfeed.utils.SearchCallbacks
 
 
 class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerViewFilterAdapter<NewsArticleItem, SearchItemViewModel>() {

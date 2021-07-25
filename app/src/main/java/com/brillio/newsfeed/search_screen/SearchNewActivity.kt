@@ -1,14 +1,14 @@
-package com.godaddy.namesearch.search_screen
+package com.brillio.newsfeed.search_screen
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.godaddy.namesearch.R
-import com.godaddy.namesearch.databinding.ActivityDomainSearchNewBinding
-import com.godaddy.namesearch.repository.Repository
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.brillio.newsfeed.R
+import com.brillio.newsfeed.databinding.ActivityDomainSearchNewBinding
+import com.brillio.newsfeed.repository.Repository
+import com.brillio.newsfeed.utils.SearchCallbacks
 import timber.log.Timber
 
 

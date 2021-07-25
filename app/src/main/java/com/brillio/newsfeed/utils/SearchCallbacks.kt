@@ -1,7 +1,7 @@
-package com.godaddy.namesearch.utils
+package com.brillio.newsfeed.utils
 
 import android.view.View
-import com.godaddy.namesearch.search_screen.SearchNewActivity
+import com.brillio.newsfeed.search_screen.SearchNewActivity
 
 interface SearchCallbacks {
     fun fetchSearchActivity(): SearchNewActivity

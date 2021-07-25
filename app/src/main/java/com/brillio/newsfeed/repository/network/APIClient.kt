@@ -1,8 +1,8 @@
-package com.godaddy.namesearch.repository.network
+package com.brillio.newsfeed.repository.network
 
 
-import com.godaddy.namesearch.logger.LogUtils
-import com.godaddy.namesearch.utils.Constants.BASE_URL
+import com.brillio.newsfeed.logger.LogUtils
+import com.brillio.newsfeed.utils.Constants.BASE_URL
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.logger
+package com.brillio.newsfeed.logger
 
 import android.text.TextUtils
 import timber.log.Timber

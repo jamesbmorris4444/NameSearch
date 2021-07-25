@@ -1,4 +1,4 @@
-package com.godaddy.namesearch
+package com.brillio.newsfeed
 
 import org.junit.Test
 

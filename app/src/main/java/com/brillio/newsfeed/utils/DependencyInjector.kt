@@ -1,10 +1,10 @@
-package com.godaddy.namesearch.utils
+package com.brillio.newsfeed.utils
 
 
-import com.godaddy.namesearch.repository.Repository
-import com.godaddy.namesearch.search_screen.SearchAdapter
-import com.godaddy.namesearch.search_screen.SearchNewActivity
-import com.godaddy.namesearch.search_screen.SearchViewModel
+import com.brillio.newsfeed.repository.Repository
+import com.brillio.newsfeed.search_screen.SearchAdapter
+import com.brillio.newsfeed.search_screen.SearchNewActivity
+import com.brillio.newsfeed.search_screen.SearchViewModel
 import dagger.Component
 import dagger.Module
 import dagger.Provides

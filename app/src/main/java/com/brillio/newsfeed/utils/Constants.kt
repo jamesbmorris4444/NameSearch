@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.utils
+package com.brillio.newsfeed.utils
 
 object Constants {
 

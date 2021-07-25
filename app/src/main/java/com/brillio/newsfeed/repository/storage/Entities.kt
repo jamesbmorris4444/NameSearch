@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.repository.storage
+package com.brillio.newsfeed.repository.storage
 
 data class NewsSource(
     val id: String,

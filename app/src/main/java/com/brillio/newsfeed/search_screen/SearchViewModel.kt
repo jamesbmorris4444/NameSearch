@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.search_screen
+package com.brillio.newsfeed.search_screen
 
 import android.app.Application
 import android.content.Context
@@ -19,15 +19,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.godaddy.namesearch.R
-import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
-import com.godaddy.namesearch.repository.Repository
-import com.godaddy.namesearch.repository.storage.NewsArticleItem
-import com.godaddy.namesearch.repository.storage.NewsFeedItem
-import com.godaddy.namesearch.utils.Constants
-import com.godaddy.namesearch.utils.DaggerRepositorySearchDependencyInjector
-import com.godaddy.namesearch.utils.RepositorySearchInjectorModule
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.brillio.newsfeed.R
+import com.brillio.newsfeed.recyclerview.RecyclerViewViewModel
+import com.brillio.newsfeed.repository.Repository
+import com.brillio.newsfeed.repository.storage.NewsArticleItem
+import com.brillio.newsfeed.repository.storage.NewsFeedItem
+import com.brillio.newsfeed.utils.Constants
+import com.brillio.newsfeed.utils.DaggerRepositorySearchDependencyInjector
+import com.brillio.newsfeed.utils.RepositorySearchInjectorModule
+import com.brillio.newsfeed.utils.SearchCallbacks
 import javax.inject.Inject
 
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="searchViewModel"
-            type="com.godaddy.namesearch.search_screen.SearchViewModel" />
+            type="com.brillio.newsfeed.search_screen.SearchViewModel" />
     </data>
     
     <RelativeLayout

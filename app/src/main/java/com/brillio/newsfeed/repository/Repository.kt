@@ -1,11 +1,11 @@
-package com.godaddy.namesearch.repository
+package com.brillio.newsfeed.repository
 
 import android.view.View
 import android.widget.ProgressBar
-import com.godaddy.namesearch.repository.network.APIClient
-import com.godaddy.namesearch.repository.network.APIInterfaceNewsGET
-import com.godaddy.namesearch.repository.storage.NewsFeedItem
-import com.godaddy.namesearch.utils.Constants
+import com.brillio.newsfeed.repository.network.APIClient
+import com.brillio.newsfeed.repository.network.APIInterfaceNewsGET
+import com.brillio.newsfeed.repository.storage.NewsFeedItem
+import com.brillio.newsfeed.utils.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

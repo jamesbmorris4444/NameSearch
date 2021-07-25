@@ -6,7 +6,7 @@
     <data>
         <variable
             name="searchItemViewModel"
-            type="com.godaddy.namesearch.search_screen.SearchItemViewModel" />
+            type="com.brillio.newsfeed.search_screen.SearchItemViewModel" />
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout

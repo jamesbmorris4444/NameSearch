@@ -1,10 +1,10 @@
-package com.godaddy.namesearch.search_screen
+package com.brillio.newsfeed.search_screen
 
 import android.view.View
 import androidx.databinding.ObservableField
-import com.godaddy.namesearch.recyclerview.RecyclerViewItemViewModel
-import com.godaddy.namesearch.repository.storage.NewsArticleItem
-import com.godaddy.namesearch.utils.SearchCallbacks
+import com.brillio.newsfeed.recyclerview.RecyclerViewItemViewModel
+import com.brillio.newsfeed.repository.storage.NewsArticleItem
+import com.brillio.newsfeed.utils.SearchCallbacks
 
 class SearchItemViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerViewItemViewModel<NewsArticleItem>() {
 

@@ -1,8 +1,8 @@
-package com.godaddy.namesearch.utils
+package com.brillio.newsfeed.utils
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.godaddy.namesearch.recyclerview.RecyclerViewViewModel
+import com.brillio.newsfeed.recyclerview.RecyclerViewViewModel
 
 @BindingAdapter("recyclerViewViewModel")
 fun setRecyclerViewViewModel(recyclerView: RecyclerView, viewModel: RecyclerViewViewModel?) {

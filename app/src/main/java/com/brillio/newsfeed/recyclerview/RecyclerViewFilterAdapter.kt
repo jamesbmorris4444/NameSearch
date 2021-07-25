@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.recyclerview
+package com.brillio.newsfeed.recyclerview
 
 import android.view.View
 import android.widget.Filter

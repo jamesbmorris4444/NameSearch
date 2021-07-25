@@ -1,4 +1,4 @@
-package com.godaddy.namesearch.recyclerview
+package com.brillio.newsfeed.recyclerview
 
 import androidx.lifecycle.ViewModel
 
