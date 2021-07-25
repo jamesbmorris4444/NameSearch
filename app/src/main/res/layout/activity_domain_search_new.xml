@@ -26,7 +26,7 @@
                 android:layout_width="371dp"
                 android:layout_height="229dp"
                 android:scaleType="fitXY"
-                android:onClick="@{(view) -> searchViewModel.onTopItemClicked(view)}"
+                android:onClick="@{() -> searchViewModel.onTopItemClicked()}"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="340dp"

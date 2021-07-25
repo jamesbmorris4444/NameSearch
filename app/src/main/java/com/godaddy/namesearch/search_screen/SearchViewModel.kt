@@ -113,7 +113,7 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
         webView.loadUrl(newsResponse.articles[view.tag as Int + 1].url)
     }
 
-    fun onTopItemClicked(view: View) {
+    fun onTopItemClicked() {
         Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[0].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.web_image))
         val webView = searchCallbacks.fetchSearchRootView().findViewById(R.id.web_view) as WebView
         setWebViewListener(webView)
