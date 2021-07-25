@@ -13,11 +13,9 @@ import retrofit2.http.Query
 interface APIInterfaceNewsGET {
     @GET(EVERYTHING_PARAM)
     fun getNewsFeed(
-        @Query(Q_PARAM) query: String,
+        @Query(Q_PARAM) topic: String,
         @Query(FROM_PARAM) from: String,
         @Query(SORT_PARAM) sortBy: String,
         @Query(KEY_PARAM) key: String
     ): Single<NewsFeedItem>
 }
-
-

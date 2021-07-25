@@ -10,7 +10,7 @@
     </data>
     
     <RelativeLayout
-        android:id="@+id/container_toolbar"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -20,6 +20,32 @@
             android:visibility="@{searchViewModel.listVisibility}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+    
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/topic_top"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="400dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+        
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="Enter Topic"
+                    android:text="@={searchViewModel.topicEditText}"
+                    android:onTextChanged="@{searchViewModel::topicEditTextChanged}"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    tools:ignore="HardcodedText" />
+                
+            </com.google.android.material.textfield.TextInputLayout>
         
             <android.widget.ImageView
                 android:id="@+id/image"
@@ -29,9 +55,7 @@
                 android:onClick="@{() -> searchViewModel.onTopItemClicked()}"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="340dp"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topic_top"
                 app:layout_constraintBottom_toTopOf="@+id/author"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

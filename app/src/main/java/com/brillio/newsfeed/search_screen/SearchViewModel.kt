@@ -1,15 +1,19 @@
 package com.brillio.newsfeed.search_screen
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -18,16 +22,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.brillio.newsfeed.R
 import com.brillio.newsfeed.recyclerview.RecyclerViewViewModel
 import com.brillio.newsfeed.repository.Repository
 import com.brillio.newsfeed.repository.storage.NewsArticleItem
 import com.brillio.newsfeed.repository.storage.NewsFeedItem
-import com.brillio.newsfeed.utils.Constants
 import com.brillio.newsfeed.utils.DaggerRepositorySearchDependencyInjector
 import com.brillio.newsfeed.utils.RepositorySearchInjectorModule
 import com.brillio.newsfeed.utils.SearchCallbacks
+import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
 import javax.inject.Inject
 
 
@@ -50,9 +54,8 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     private lateinit var newsResponse: NewsFeedItem
     val webViewVisibility = ObservableField(View.GONE)
     val listVisibility = ObservableField(View.VISIBLE)
-    var loadingFinished = true
-    var redirect = false
-
+    private var loadingFinished = true
+    private var redirect = false
 
     init {
         searchCallbacks.fetchSearchActivity()?.let { activity ->
@@ -63,7 +66,7 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
         }
         val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
         progressBar.visibility = View.VISIBLE
-        repository.getNewsFeed(Constants.KEY, progressBar, this::showNews, this::showNewsError)
+        repository.getNewsFeed(getTopic(), progressBar, this::showNews, this::showNewsError)
     }
 
     override fun setLayoutManager(): RecyclerView.LayoutManager {
@@ -78,13 +81,54 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
         }
     }
 
+    private fun setTopic(topic: String) {
+        val sharedPreferences: SharedPreferences = searchCallbacks.fetchSearchActivity().getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("topic", topic)
+        editor.apply()
+    }
+
+    private fun getTopic(): String {
+        val sharedPreferences: SharedPreferences = searchCallbacks.fetchSearchActivity().getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE)
+        sharedPreferences.getString("topic", "weather")?.let {
+            return it
+        } ?: run {
+            return "weather"
+        }
+    }
+
+    private fun hideKeyboard() {
+        val view: RelativeLayout = searchCallbacks.fetchSearchRootView().findViewById(R.id.container)
+        val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    var topicEditText: ObservableField<String> = ObservableField("")
+    fun topicEditTextChanged(string: CharSequence, start: Int, before: Int, count: Int) {
+        if (string.indexOf(",,") >= 0) {
+            setTopic(string.toString().substring(0, string.length - 1))
+            onNewTopic()
+        }
+    }
+
+    private fun onNewTopic() {
+        hideKeyboard()
+        val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
+        progressBar.visibility = View.VISIBLE
+        repository.getNewsFeed(getTopic(), progressBar, this::showNews, this::showNewsError)
+    }
+
+    @SuppressLint("LogNotTimber")
     private fun showNewsError(message: String?) {
         message?.let {
-            Log.d("JIMX","msg="+it)
+            Log.d("ERROR","Error msg=$it")
         }
     }
 
     private fun showNews(newsResponse: NewsFeedItem) {
+        topicEditText.set("")
+        searchCallbacks.fetchSearchRootView().findViewById<TextInputEditText>(R.id.topic).clearFocus()
+        adapterList.clear()
         this.newsResponse = newsResponse
         for (index in 1 until newsResponse.articles.size) {
             adapterList.add(newsResponse.articles[index])
@@ -105,21 +149,20 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     }
 
     fun onItemClicked(view: View) {
-        Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[view.tag as Int + 1].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.web_image))
-        val webView = searchCallbacks.fetchSearchRootView().findViewById(R.id.web_view) as WebView
-        setWebViewListener(webView)
-        val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
-        progressBar.visibility = View.VISIBLE
-        webView.loadUrl(newsResponse.articles[view.tag as Int + 1].url)
+        handleClick(view.tag as Int + 1)
     }
 
     fun onTopItemClicked() {
-        Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[0].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.web_image))
+        handleClick(0)
+    }
+
+    private fun handleClick(index: Int) {
+        Glide.with(searchCallbacks.fetchSearchActivity()).load(newsResponse.articles[index].urlToImage).into(searchCallbacks.fetchSearchRootView().findViewById(R.id.web_image))
         val webView = searchCallbacks.fetchSearchRootView().findViewById(R.id.web_view) as WebView
         setWebViewListener(webView)
         val progressBar: ProgressBar = searchCallbacks.fetchSearchActivity().findViewById(R.id.search_progress_bar)
         progressBar.visibility = View.VISIBLE
-        webView.loadUrl(newsResponse.articles[0].url)
+        webView.loadUrl(newsResponse.articles[index].url)
     }
 
     private fun setWebViewListener(webView: WebView) {

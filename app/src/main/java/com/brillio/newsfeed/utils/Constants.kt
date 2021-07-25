@@ -6,7 +6,6 @@ object Constants {
     const val EVERYTHING_PARAM = "everything"
     const val KEY = "70a07c9f4f7a43118a5724a0e9b7069c"
     const val KEY_PARAM = "apiKey"
-    const val Q = "olympics"
     const val Q_PARAM = "q"
     const val FROM = "2021-06-30"
     const val FROM_PARAM = "from"

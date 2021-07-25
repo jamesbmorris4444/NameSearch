@@ -16,8 +16,8 @@ class Repository {
     private val apiInterfaceNewsGet: APIInterfaceNewsGET = APIClient.newsGetClient
     private lateinit var disposable: Disposable
 
-    fun getNewsFeed(key: String, progressBar: ProgressBar, showNews: (newsResponse: NewsFeedItem) -> Unit, showNewsError: (error: String?) -> Unit) {
-        disposable = apiInterfaceNewsGet.getNewsFeed(Constants.Q, Constants.FROM, Constants.SORT, key)
+    fun getNewsFeed(topic: String, progressBar: ProgressBar, showNews: (newsResponse: NewsFeedItem) -> Unit, showNewsError: (error: String?) -> Unit) {
+        disposable = apiInterfaceNewsGet.getNewsFeed(topic, Constants.FROM, Constants.SORT, Constants.KEY)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .timeout(15L, TimeUnit.SECONDS)
@@ -28,6 +28,7 @@ class Repository {
             },
             { throwable ->
                 progressBar.visibility = View.GONE
+
                 disposable?.dispose()
                 showNewsError(throwable.message)
             })
