@@ -3,6 +3,7 @@ package com.godaddy.namesearch.search_screen
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.godaddy.namesearch.R
@@ -11,11 +12,13 @@ import com.godaddy.namesearch.repository.Repository
 import com.godaddy.namesearch.utils.SearchCallbacks
 import timber.log.Timber
 
+
 class SearchNewActivity : AppCompatActivity(), SearchCallbacks {
 
     lateinit var repository: Repository
     lateinit var searchViewModel: SearchViewModel
     private lateinit var activityMainBinding: ActivityDomainSearchNewBinding
+    lateinit var toolbar: Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
         repository = Repository()
