@@ -34,6 +34,29 @@ object APIClient {
             return builder.build().create(APIInterfaceLoginPOST::class.java)
         }
 
+    val newsGetClient: APIInterfaceNewsGET
+        get() {
+            val interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    LogUtils.D(APIClient::class.java.simpleName, LogUtils.FilterTags.withTags(
+                        LogUtils.TagFilter.API
+                    ), String.format("okHttp logging interceptor=%s", message))
+                }
+            })
+            interceptor.level = HttpLoggingInterceptor.Level.BODY  // BASIC or BODY
+            val client = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+            val gson = GsonBuilder()
+                .create()
+            val builder = Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(client)
+                .baseUrl(BASE_URL)
+            return builder.build().create(APIInterfaceNewsGET::class.java)
+        }
+
     val getExactList: APIInterfaceExactGET
         get() {
             val interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {

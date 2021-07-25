@@ -24,6 +24,7 @@ class SearchNewActivity : AppCompatActivity(), SearchCallbacks {
         activityMainBinding.lifecycleOwner = this
         searchViewModel = ViewModelProvider(this, SearchViewModelFactory(this)).get(SearchViewModel::class.java)
         activityMainBinding.searchViewModel = searchViewModel
+        activityMainBinding.resultsListView.addItemDecoration(SearchViewModel.VerticalDividerItemDecoration(this, R.drawable.divider_drawable))
     }
 
     override fun fetchSearchActivity(): SearchNewActivity {

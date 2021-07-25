@@ -4,26 +4,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.godaddy.namesearch.R
-import com.godaddy.namesearch.databinding.ItemDomainResultNewBinding
+import com.godaddy.namesearch.databinding.ItemNewsFeedResultNewBinding
 import com.godaddy.namesearch.recyclerview.RecyclerViewFilterAdapter
-import com.godaddy.namesearch.repository.storage.Domain
+import com.godaddy.namesearch.repository.storage.NewsArticleItem
 import com.godaddy.namesearch.utils.DaggerRepositorySearchDependencyInjector
 import com.godaddy.namesearch.utils.RepositorySearchInjectorModule
 import com.godaddy.namesearch.utils.SearchCallbacks
 
 
-class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerViewFilterAdapter<Domain, SearchItemViewModel>() {
+class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerViewFilterAdapter<NewsArticleItem, SearchItemViewModel>() {
 
     private var adapterFilter: AdapterFilter? = null
 
     init {
-        searchCallbacks.fetchSearchActivity()?.let { activity ->
-            DaggerRepositorySearchDependencyInjector.builder()
-                .repositorySearchInjectorModule(RepositorySearchInjectorModule(activity))
-                .build()
-                .inject(this)
-        }
+        DaggerRepositorySearchDependencyInjector.builder()
+            .repositorySearchInjectorModule(RepositorySearchInjectorModule(searchCallbacks.fetchSearchActivity()))
+            .build()
+            .inject(this)
     }
 
     override fun getFilter(): AdapterFilter {
@@ -33,22 +32,23 @@ class SearchAdapter(private val searchCallbacks: SearchCallbacks) : RecyclerView
         return AdapterFilter()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainViewHolder {
-        val domainListItemBinding: ItemDomainResultNewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_domain_result_new, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsFeedViewHolder {
+        val domainListItemBinding: ItemNewsFeedResultNewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_news_feed_result_new, parent, false)
         val domainItemViewModel = SearchItemViewModel(searchCallbacks)
         domainListItemBinding.searchItemViewModel = domainItemViewModel
-        return DomainViewHolder(domainListItemBinding.root, domainItemViewModel, domainListItemBinding)
+        return NewsFeedViewHolder(domainListItemBinding.root, domainItemViewModel, domainListItemBinding)
     }
 
-    inner class DomainViewHolder internal constructor(itemView: View, viewModel: SearchItemViewModel, viewDataBinding: ItemDomainResultNewBinding) :
-        ItemViewHolder<Domain, SearchItemViewModel> (itemView, viewModel, viewDataBinding)
+    inner class NewsFeedViewHolder internal constructor(itemView: View, viewModel: SearchItemViewModel, viewDataBinding: ItemNewsFeedResultNewBinding) :
+        ItemViewHolder<NewsArticleItem, SearchItemViewModel> (itemView, viewModel, viewDataBinding)
 
-    override fun onBindViewHolder(holder: ItemViewHolder<Domain, SearchItemViewModel>, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder<NewsArticleItem, SearchItemViewModel>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.itemView.tag = position
+        Glide.with(searchCallbacks.fetchSearchActivity()).load(itemList[position].urlToImage).into(holder.itemView.findViewById(R.id.image))
     }
 
-    override fun itemFilterable(item: Domain, constraint: String): Boolean {
+    override fun itemFilterable(item: NewsArticleItem, constraint: String): Boolean {
         return true
     }
 
