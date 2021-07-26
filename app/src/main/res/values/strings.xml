@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Olympics NewsFeed</string>
+    <string name="app_name">NewsFeed</string>
+    <string name="topic">Enter Topic, followed by \",,\"</string>
 </resources>

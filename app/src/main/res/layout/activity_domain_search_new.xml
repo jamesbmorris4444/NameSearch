@@ -27,6 +27,8 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="400dp"
                 android:layout_marginBottom="15dp"
+                app:boxBackgroundColor="#00000000"
+                android:background="#00000000"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/image"
@@ -37,7 +39,7 @@
                     android:id="@+id/topic"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:hint="Enter Topic"
+                    android:hint="@string/topic"
                     android:text="@={searchViewModel.topicEditText}"
                     android:onTextChanged="@{searchViewModel::topicEditTextChanged}"
                     android:inputType="text"
@@ -110,27 +112,45 @@
             android:visibility="@{searchViewModel.webViewVisibility}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        
-            <android.widget.ImageView
-                android:id="@+id/web_image"
-                android:layout_width="371dp"
-                android:layout_height="229dp"
-                android:onClick="@{() -> searchViewModel.onBackClicked()}"
-                android:scaleType="fitXY"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="280dp"
+    
+            <RelativeLayout
+                android:id="@+id/back_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/web_view"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent">
+    
+                <android.widget.ImageView
+                    android:id="@+id/web_image"
+                    android:layout_width="371dp"
+                    android:layout_height="229dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="280dp"/>
+        
+                <android.widget.ImageView
+                    android:id="@+id/button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitXY"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_back_button"
+                    android:onClick="@{() -> searchViewModel.onBackClicked()}"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="300dp"/>
+    
+            </RelativeLayout>
     
             <WebView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                app:layout_constraintTop_toBottomOf="@+id/web_image"
+                app:layout_constraintTop_toBottomOf="@+id/back_root"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

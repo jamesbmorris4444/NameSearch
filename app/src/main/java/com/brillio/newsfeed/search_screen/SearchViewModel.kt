@@ -106,7 +106,7 @@ class SearchViewModel(private val searchCallbacks: SearchCallbacks) : RecyclerVi
     var topicEditText: ObservableField<String> = ObservableField("")
     fun topicEditTextChanged(string: CharSequence, start: Int, before: Int, count: Int) {
         if (string.indexOf(",,") >= 0) {
-            setTopic(string.toString().substring(0, string.length - 1))
+            setTopic(string.toString().substring(0, string.length - 2))
             onNewTopic()
         }
     }
